@@ -9,6 +9,7 @@ import { ProductService } from '../product.service';
 })
 export class ProductDetailComponent implements OnInit {
   product;
+  relatedProducts;
 
   constructor(
     private route: ActivatedRoute,
@@ -19,9 +20,12 @@ export class ProductDetailComponent implements OnInit {
     products.forEach(product => {
       if(product.id == target) {
         this.product = product;
-        
       } 
     });
+    this.relatedProducts = [];
+    this.product.relatedProducts.forEach(productId => {
+      this.relatedProducts.push(products.find(p => p.id ==productId));
+    })
   }
 
   ngOnInit(): void {
