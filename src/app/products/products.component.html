@@ -2,6 +2,11 @@
 <h2>Products</h2>
 
 <div *ngFor="let product of products | async">
-    <h3>{{product.name}}</h3>
+    <h3>
+        <a [title]="product.name + 'details'"
+        [routerLink]="['/products', product.id]">
+            {{product.name}}
+        </a>
+    </h3>
     <div><span>Price: </span>{{product.price.amount | currency}}</div>
 </div>
