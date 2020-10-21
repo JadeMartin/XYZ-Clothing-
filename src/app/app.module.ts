@@ -8,6 +8,11 @@ import { ProductsComponent } from './products/products.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import { RouterModule } from '@angular/router';
+
 
 @NgModule({
   imports: [
@@ -16,6 +21,10 @@ import { TopBarComponent } from './top-bar/top-bar.component';
     FormsModule,
     AppRoutingModule,
     MatInputModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    RouterModule
   ],
   declarations: [
     AppComponent,
