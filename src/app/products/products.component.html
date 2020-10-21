@@ -8,5 +8,5 @@
             {{product.name}}
         </a>
     </h3>
-    <div><span>Price: </span>{{product.price.amount | currency}}</div>
+    <div><span>Price: </span>{{product.price.amount | currency:product.price.base}}</div>
 </div>

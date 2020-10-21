@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Product } from './models/product';
 import { HttpClient } from "@angular/common/http";
-import { defaultCipherList } from 'constants';
-import { mapToMapExpression } from '@angular/compiler/src/render3/util';
-import { map } from 'rxjs/operators'
 
 
 
