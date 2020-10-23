@@ -8,17 +8,6 @@
                     <h1>XYZ Clothing</h1>
                 </a>
             </div>
-
-            <div class="col">
-                <mat-form-field appearance="fill">
-                    <mat-label>Select Currency</mat-label>
-                    <mat-select>
-                        <mat-option *ngFor="let currency of currencyList | async" [value]="currency">
-                            {{currency.base}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field> 
-            </div>
         </div>
     </div>
 </nav>

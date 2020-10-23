@@ -1,5 +1,7 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CurrencyService } from '../currency.service';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -10,10 +12,14 @@ import { ProductService } from '../product.service';
 export class ProductDetailComponent implements OnInit {
   product;
   relatedProducts;
+  selectedCurrency;
+  currencyList;
+  currentCurrency;
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private currencyService: CurrencyService,
   ) { }
 
   checkForProduct(products, target) {
@@ -22,15 +28,30 @@ export class ProductDetailComponent implements OnInit {
         this.product = product;
       } 
     });
-    this.relatedProducts = [];
-    this.product.relatedProducts.forEach(productId => {
-      this.relatedProducts.push(products.find(p => p.id ==productId));
-    })
+    //add check for valid product;
+    if(this.product) {
+      this.relatedProducts = [];
+      this.product.relatedProducts.forEach(productId => {
+        this.relatedProducts.push(products.find(p => p.id ==productId));
+      })
+    }
+  }
+
+  selected(): void {
+    this.currencyService.setCurrency(this.selectedCurrency);
+    this.currentCurrency = this.selectedCurrency;
+    //call function to flip prices on each object
+    this.relatedProducts.push(this.product);
+    this.relatedProducts = this.productService.standardizeCurrency(this.currentCurrency, this.relatedProducts);
+    this.relatedProducts.pop();
   }
 
   ngOnInit(): void {
+    this.currencyList = this.currencyService.getCurrencys();
+    this.currentCurrency = this.currencyService.getCurrency();
     this.route.paramMap.subscribe(params => {
-      this.product = this.productService.getProducts().subscribe(products => this.checkForProduct(products, +params.get('id')))
+      //logic to check wether to subscribe or not
+      this.productService.getProducts().subscribe(products => this.checkForProduct(this.productService.standardizeCurrency(this.currentCurrency), +params.get('id')))
     });
   }
 

@@ -5,7 +5,8 @@ export interface Product {
     description: string,
     price: {
         base: string,
-        amount: number
+        amount: number,
+        adjAmount: number
     }
     relatedProducts: number[];
 }
