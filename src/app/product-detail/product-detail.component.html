@@ -15,7 +15,14 @@
     <div *ngIf="product">
         <div class="d-flex justify-content-xl-center flex-row">
             <div class="p-2">
-                <h2>Product Details</h2>
+                <h2>Product Details 
+                    <a [routerLink]="['/product/edit', product.id]">
+                    <button mat-icon-button 
+                    [title]="product.name + ' edit'">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    </a>
+                </h2>
                 <h3>{{ product.name}}</h3>
                 <div *ngIf="product.price">
                     <h4>{{ product.price.adjAmount | currency:selectedCurrency.base}}</h4>
