@@ -1,31 +1,39 @@
 <div class="container">
-    <h2>Product Details</h2>
-
-    <mat-form-field appearance="fill">
-        <mat-label>Select Currency</mat-label>
-        <mat-select [(value)]="selectedCurrency" (selectionChange)="selected()">
-            <mat-option *ngFor="let currency of currencyList | async" [value]="currency">
-                {{currency.base}}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>  
+    <div class="d-flex flex-row">
+        <div class="p-2 ml-auto">
+            <mat-form-field appearance="fill">
+                <mat-label>Select Currency</mat-label>
+                <mat-select [(value)]="selectedCurrency" (selectionChange)="selected()">
+                    <mat-option *ngFor="let currency of currencyList | async" [value]="currency">
+                        {{currency.base}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field> 
+        </div>
+    </div> 
 
     <div *ngIf="product">
-        <h3>{{ product.name}}</h3>
-        <div *ngIf="product.price">
-            <h4>{{ product.price.adjAmount | currency:selectedCurrency.base}}</h4>
-        </div>
-        <p>{{ product.description }}</p>
+        <div class="d-flex justify-content-xl-center flex-row">
+            <div class="p-2">
+                <h2>Product Details</h2>
+                <h3>{{ product.name}}</h3>
+                <div *ngIf="product.price">
+                    <h4>{{ product.price.adjAmount | currency:selectedCurrency.base}}</h4>
+                </div>
+                <p>{{ product.description }}</p>
 
-        <h2>Related Products</h2>
-        <div *ngFor="let product of relatedProducts | async">
-            <h3>
-                <a [title]="product.name + 'details'"
-                [routerLink]="['/products', product.id]">
-                    {{product.name}}
-                </a>
-            </h3>
-            <div><span>Price: </span>{{product.price.adjAmount | currency:selectedCurrency.base}}</div>
+                <h2>Related Products</h2>
+                <div *ngFor="let product of relatedProducts | async">
+                    <h3>
+                        <a [title]="product.name + 'details'"
+                        [routerLink]="['/products', product.id]">
+                            {{product.name}}
+                        </a>
+                    </h3>
+                    <div><span>Price: </span>{{product.price.adjAmount | currency:selectedCurrency.base}}</div>
+                    <br>
+                </div>
+            </div>
         </div>
     </div>
 </div>

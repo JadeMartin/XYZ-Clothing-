@@ -26,7 +26,6 @@ export class ProductsComponent implements OnInit {
     this.currencyList = this.currencyService.getCurrencys()
     this.productService.getProducts().subscribe(products => this.products = this.productService.getProducts());
     this.currencyService.getCurrencys().subscribe(currency => this.currencyService.getCurrency().subscribe(currency => this.selectedCurrency = currency));
-    
   }
 
 }
