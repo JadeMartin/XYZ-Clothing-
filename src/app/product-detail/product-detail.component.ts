@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CurrencyService } from '../currency.service';
 import { ProductService } from '../product.service';
+import { isObservable } from "rxjs";
+
 
 @Component({
   selector: 'app-product-detail',
@@ -32,6 +34,12 @@ export class ProductDetailComponent implements OnInit {
     this.currencyService.setCurrency(this.selectedCurrency);
     //call function to swap prices as neededd
     this.productService.getProducts();
+  }
+  //lifecycle hook to monitor the selectedCurrency
+  ngDoCheck()	{
+    if(isObservable(this.selectedCurrency)) {
+      this.selectedCurrency.subscribe(currency => this.selectedCurrency = currency);
+    }
   }
 
   ngOnInit(): void {
