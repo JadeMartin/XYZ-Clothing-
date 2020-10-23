@@ -14,7 +14,6 @@ export class ProductDetailComponent implements OnInit {
   relatedProducts;
   selectedCurrency;
   currencyList;
-  currentCurrency;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,37 +21,25 @@ export class ProductDetailComponent implements OnInit {
     private currencyService: CurrencyService,
   ) { }
 
-  checkForProduct(products, target) {
-    products.forEach(product => {
-      if(product.id == target) {
-        this.product = product;
-      } 
-    });
-    //add check for valid product;
-    if(this.product) {
-      this.relatedProducts = [];
-      this.product.relatedProducts.forEach(productId => {
-        this.relatedProducts.push(products.find(p => p.id ==productId));
-      })
-    }
+
+  processInit(productId) {
+    this.relatedProducts = this.productService.getRelatedProducts(productId);
+    this.productService.getSingleProduct(productId).subscribe(product => this.product = product);
+    this.selectedCurrency = this.currencyService.getCurrency();
   }
 
   selected(): void {
     this.currencyService.setCurrency(this.selectedCurrency);
-    this.currentCurrency = this.selectedCurrency;
-    //call function to flip prices on each object
-    this.relatedProducts.push(this.product);
-    this.relatedProducts = this.productService.standardizeCurrency(this.currentCurrency, this.relatedProducts);
-    this.relatedProducts.pop();
+    //call function to swap prices as neededd
+    this.productService.getProducts();
   }
 
   ngOnInit(): void {
-    this.currencyList = this.currencyService.getCurrencys();
-    this.currentCurrency = this.currencyService.getCurrency();
+    this.currencyList = this.currencyService.getCurrencys()
     this.route.paramMap.subscribe(params => {
-      //logic to check wether to subscribe or not
-      this.productService.getProducts().subscribe(products => this.checkForProduct(this.productService.standardizeCurrency(this.currentCurrency), +params.get('id')))
+      this.productService.getProducts().subscribe(products => this.processInit(+params.get('id')))
     });
+    this.currencyService.getCurrencys().subscribe(currency => this.currencyService.getCurrency().subscribe(currency => this.selectedCurrency = currency));
   }
 
 }

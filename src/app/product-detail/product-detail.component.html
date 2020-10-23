@@ -1,5 +1,6 @@
 <div class="container">
     <h2>Product Details</h2>
+
     <mat-form-field appearance="fill">
         <mat-label>Select Currency</mat-label>
         <mat-select [(value)]="selectedCurrency" (selectionChange)="selected()">
@@ -7,24 +8,24 @@
                 {{currency.base}}
             </mat-option>
         </mat-select>
-    </mat-form-field> 
+    </mat-form-field>  
 
     <div *ngIf="product">
-        <h3>{{ product.name }}</h3>
+        <h3>{{ product.name}}</h3>
         <div *ngIf="product.price">
-            <h4>{{ product.price.adjAmount | currency:currentCurrency.base}}</h4>
+            <h4>{{ product.price.adjAmount | currency:selectedCurrency.base}}</h4>
         </div>
         <p>{{ product.description }}</p>
 
         <h2>Related Products</h2>
-        <div *ngFor="let product of relatedProducts">
+        <div *ngFor="let product of relatedProducts | async">
             <h3>
                 <a [title]="product.name + 'details'"
                 [routerLink]="['/products', product.id]">
                     {{product.name}}
                 </a>
             </h3>
-            <div><span>Price: </span>{{product.price.adjAmount | currency:currentCurrency.base}}</div>
+            <div><span>Price: </span>{{product.price.adjAmount | currency:selectedCurrency.base}}</div>
         </div>
     </div>
 </div>

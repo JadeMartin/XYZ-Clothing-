@@ -1,46 +1,54 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { CurrencyService } from './currency.service';
-
+import { Observable, of } from 'rxjs';
+import { Product } from './models/product';
 
 
 
 @Injectable({
   providedIn: 'root',
 })
+//Uses observer pattern for sending data into components
+//Allows for code to be more extendable and useful if further developed
+//This pattern allows for the server to more accurately replicate a backend
+//Allows for async code, and easy switching to an actual server in the future.
 export class ProductService {
 
-  products;
-  currencyList;
+  private products;
+
   constructor(private http: HttpClient, private currencyService: CurrencyService) { }
 
-  setProducts(products) {
-    this.products = products;
+  getSingleProduct(productId:number): Observable<Product>{
+    return of(this.products.find(product => product.id == productId));
   }
 
-  getProducts() {
-    //this.products ? this.products : 
-    this.http.get('/assets/products.json').subscribe(products => this.products = products);
-    return this.http.get('/assets/products.json')
-  }
-
-
-  standardizeCurrency(currency, productList=this.products) {
-    //-> take new currency & list of currencys
-    //->iterate over each product check product base against currency base
-    //-> if same set adjAmount to amount
-    //-> else -> set adjAmount to Math.round(this.currencyList.find(currency => currency.base == product.price.base).rates[currency.base] * product.price.amount)
-    
-    if(!this.currencyList){
-      this.currencyList = this.currencyService.currencyList;
+  //Returns all products that are related to the project Id supplied
+  getRelatedProducts(productId:number): Observable<Product[]>{
+    let relatedProducts = [];
+    let currentProduct = this.products.find(product => product.id == productId);
+    if(currentProduct){
+      currentProduct.relatedProducts.forEach(id => { //loop over related products list
+        relatedProducts.push(this.products.find(product => product.id == id)); //find each product then add to return list
+      })
     }
-    
+    return of(relatedProducts);
+  }
+
+  getProducts(): Observable<any> {
+    if(this.products){
+      return of(this.standardizeCurrency(this.products));
+    } else {
+      this.http.get('/assets/products.json').subscribe(products => this.products = this.standardizeCurrency(products));
+      return this.http.get('/assets/products.json');
+    }
+  }
+
+  //helper function to iterate through each product and 
+  //call the currency conversion method found in the currency service
+  private standardizeCurrency(productList=this.products) {
     productList.forEach(product => {
-      if(product.price.base != currency.base) {
-        product.price.adjAmount = this.currencyList.find(currency => currency.base == product.price.base).rates[currency.base] * product.price.amount;
-      } else {
-        product.price.adjAmount = product.price.amount;
-      }
+      this.currencyService.currencyConversion(product);
     });
     return productList;
   }

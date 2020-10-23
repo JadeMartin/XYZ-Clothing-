@@ -8,7 +8,7 @@ import { CurrencyService } from '../currency.service';
 })
 export class TopBarComponent implements OnInit {
 
-  constructor(private currencyService: CurrencyService) { }
+  constructor() { }
 
 
   ngOnInit(): void {

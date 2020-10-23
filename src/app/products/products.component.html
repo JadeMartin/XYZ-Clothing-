@@ -11,14 +11,14 @@
         </mat-select>
     </mat-form-field> 
     <div *ngIf="products">
-        <div *ngFor="let product of products">
+        <div *ngFor="let product of products | async">
             <h3>
                 <a [title]="product.name + 'details'"
                 [routerLink]="['/products', product.id]">
                     {{product.name}}
                 </a>
             </h3>
-            <div><span>Price: </span>{{product.price.adjAmount | currency:currentCurrency.base}}</div>
+            <div *ngIf="selectedCurrency"><span>Price: </span>{{product.price.adjAmount | currency:selectedCurrency.base}}</div>
         </div>
     </div>
 </div>
