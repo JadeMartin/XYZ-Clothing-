@@ -35,6 +35,13 @@ export class ProductService {
     return of(relatedProducts);
   }
 
+  updateProduct(orginalId, updatedProduct) {
+    let index = this.products.findIndex(product => product.id == orginalId);
+    this.products[index] = updatedProduct;
+    //update index on all related products
+
+  }
+
   getProducts(): Observable<any> {
     if(this.products){
       return of(this.standardizeCurrency(this.products));

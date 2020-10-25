@@ -8,25 +8,28 @@
                     <label for ="name">
                         Name
                     </label>
-                    <input id="name" name="name" type="text" formControlName="name" value={{product.name}}/>
+                    <input id="name" name="name" type="text" formControlName="name" value={{product.name}} required/>
+                </div>
+                <div *ngIf="idErrors" class="p-2">
+                    <p class="text-danger">Id must be unique!</p>
                 </div>
                 <div class="p-2">
                     <label for ="id">
                         ID
                     </label>
-                    <input id="id" name="id" type="number" formControlName="id" value={{product.id}}/>
+                    <input id="id" name="id" type="number" formControlName="id" value={{product.id}} required/>
                 </div>
                 <div class="p-2">
                     <label for ="description">
                         Description
                     </label>
-                    <input id="description" name="description" type="text" formControlName="description" value={{product.description}}/>
+                    <input id="description" name="description" type="text" formControlName="description" value={{product.description}} required/>
                 </div>
                 <div class="p-2">
                     <label for ="price">
                         Price
                     </label>
-                    <input id="price" name="price" type="number" formControlName="price" value={{product.price.amount}}/>
+                    <input id="price" name="price" type="number" formControlName="price" value={{product.price.amount}} required/>
                 </div>
                 
                 <div class="p-2">
@@ -50,8 +53,8 @@
                     </mat-form-field>  
                 </div>
                 <div class="p-2">
-                    <button (click)="goBack()">Back</button>
-                    <button class="button" type="submit">Edit</button>
+                    <button (click)="goBack()" class="btn btn-danger">Back</button>
+                    <button class="btn btn-success" type="submit" >Edit</button>
                 </div>
             </form>
         </div>

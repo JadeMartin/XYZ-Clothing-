@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CurrencyService } from '../currency.service';
 import { ProductService } from '../product.service';
 import { FormBuilder, FormControl } from '@angular/forms';
@@ -17,14 +17,15 @@ export class ProductEditComponent implements OnInit {
   currencyList;
   relatedProductsForm = new FormControl();
   currencyForm = new FormControl();
-  editProductForm
-
+  editProductForm;
+  idErrors = false;
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
     private currencyService: CurrencyService,
     private location: Location,
     private formBuilder: FormBuilder,
+    private router: Router,
   ) { 
     this.editProductForm = this.formBuilder.group({
       name: "",
@@ -35,10 +36,23 @@ export class ProductEditComponent implements OnInit {
   }
 
   onSubmit(productData){
-    console.log("submitted");
-    console.log(productData);
-    console.log(this.currencyForm.value);
-    console.log(this.relatedProductsForm.value)
+    if(!this.products.find(product => product.id == productData.id)) {
+      productData.price = {
+        base: this.currencyForm.value.base,
+        amount: productData.price,
+      }
+      productData.relatedProducts = [];
+      if (productData.relatedProducts != this.relatedProductsForm.value) {
+        this.relatedProductsForm.value.forEach(product => {
+          productData.relatedProducts.push(product.id)
+        });
+      }
+      this.productService.updateProduct(this.product.id, productData);
+      this.router.navigateByUrl('products/' + productData.id);
+    } else {
+      this.idErrors = true;
+    }
+
   }
   
 
@@ -54,6 +68,7 @@ export class ProductEditComponent implements OnInit {
     })
     this.productService.getProducts().subscribe(products => this.products = products.filter(product => product.id != this.product.id));
   }
+
 
   goBack(): void {
     this.location.back();
