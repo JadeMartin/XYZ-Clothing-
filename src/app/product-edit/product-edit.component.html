@@ -1,1 +1,59 @@
-<p>product-edit works!</p>
+<div class="container">
+
+    <div *ngIf="product" class="d-flex justify-content-xl-center flex-row">
+        <div class="d-flex-column">
+            <form ngNativeValidate [formGroup]="editProductForm" (ngSubmit)="onSubmit(editProductForm.value)">
+                <div class="p-2">
+                    <h2>Edit Product Details</h2>
+                    <label for ="name">
+                        Name
+                    </label>
+                    <input id="name" name="name" type="text" formControlName="name" value={{product.name}}/>
+                </div>
+                <div class="p-2">
+                    <label for ="id">
+                        ID
+                    </label>
+                    <input id="id" name="id" type="number" formControlName="id" value={{product.id}}/>
+                </div>
+                <div class="p-2">
+                    <label for ="description">
+                        Description
+                    </label>
+                    <input id="description" name="description" type="text" formControlName="description" value={{product.description}}/>
+                </div>
+                <div class="p-2">
+                    <label for ="price">
+                        Price
+                    </label>
+                    <input id="price" name="price" type="number" formControlName="price" value={{product.price.amount}}/>
+                </div>
+                
+                <div class="p-2">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Select Currency Base</mat-label>
+                        <mat-select [formControl]="currencyForm" >
+                            <mat-option *ngFor="let currency of currencyList | async" [value]="currency">
+                                {{currency.base}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>  
+                </div>
+                <div class="p-2">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Select Related Products</mat-label>
+                        <mat-select [formControl]="relatedProductsForm" multiple>
+                            <mat-option *ngFor="let relatedProduct of products" [value]="relatedProduct">
+                                <span>{{relatedProduct.name}}  Price: </span>{{relatedProduct.price.amount | currency:relatedProduct.price.base}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>  
+                </div>
+                <div class="p-2">
+                    <button (click)="goBack()">Back</button>
+                    <button class="button" type="submit">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

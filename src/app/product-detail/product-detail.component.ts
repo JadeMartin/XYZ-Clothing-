@@ -32,9 +32,10 @@ export class ProductDetailComponent implements OnInit {
 
   selected(): void {
     this.currencyService.setCurrency(this.selectedCurrency);
-    //call function to swap prices as neededd
+    //call function to swap prices as needed
     this.productService.getProducts();
   }
+  
   //lifecycle hook to monitor the selectedCurrency
   ngDoCheck()	{
     if(isObservable(this.selectedCurrency)) {
