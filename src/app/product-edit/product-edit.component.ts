@@ -4,6 +4,8 @@ import { CurrencyService } from '../currency.service';
 import { ProductService } from '../product.service';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { Location } from '@angular/common';
+import { Observable } from 'rxjs';
+import { Product } from '../models/product';
 
 
 @Component({
@@ -12,13 +14,13 @@ import { Location } from '@angular/common';
   styleUrls: ['./product-edit.component.css']
 })
 export class ProductEditComponent implements OnInit {
-  product;
-  products;
-  currencyList;
+  product: Product;
+  products: Product[];
+  currencyList: Observable<any>;
   relatedProductsForm = new FormControl();
   currencyForm = new FormControl();
   editProductForm;
-  idErrors = false;
+  idErrors: Boolean = false;
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,

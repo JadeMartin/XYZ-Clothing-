@@ -35,11 +35,21 @@ export class ProductService {
     return of(relatedProducts);
   }
 
-  updateProduct(orginalId, updatedProduct) {
+  updateProduct(orginalId, updatedProduct): void {
     let index = this.products.findIndex(product => product.id == orginalId);
     this.products[index] = updatedProduct;
-    //update index on all related products
-
+    //TODO: Name - must be longer than 3 characters
+    if (orginalId != updatedProduct.id) {
+      this.products.forEach(product => {
+        product.relatedProducts.forEach(relatedId => {
+          if(relatedId == orginalId){
+            product.relatedProducts.push(updatedProduct.id);
+            product.relatedProducts.splice(product.relatedProducts.indexOf(relatedId), 1);
+            relatedId = updatedProduct.id;
+          }
+        })
+      })
+    }
   }
 
   getProducts(): Observable<any> {
@@ -53,7 +63,7 @@ export class ProductService {
 
   //helper function to iterate through each product and 
   //call the currency conversion method found in the currency service
-  private standardizeCurrency(productList=this.products) {
+  private standardizeCurrency(productList=this.products): Product[] {
     productList.forEach(product => {
       this.currencyService.currencyConversion(product);
     });

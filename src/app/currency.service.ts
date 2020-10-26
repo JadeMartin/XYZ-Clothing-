@@ -14,7 +14,7 @@ import { Product } from './models/product';
 export class CurrencyService {
   
   private currentCurrency: Currency;
-  private currencyList;
+  private currencyList: Currency[];
 
   constructor(private http: HttpClient) { }
 
@@ -41,7 +41,7 @@ export class CurrencyService {
   }
 
   //private helper function for setting up currency data
-  private processCurrencys(currencys) {
+  private processCurrencys(currencys): void {
     this.currencyList = currencys;
     this.currentCurrency = currencys[0];
   }

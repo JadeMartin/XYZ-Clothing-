@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CurrencyService } from '../currency.service';
 import { ProductService } from '../product.service';
-import { isObservable } from "rxjs";
+import { isObservable, Observable } from "rxjs";
+import { Product } from '../models/product';
+import { Currency } from '../models/currency';
 
 
 @Component({
@@ -12,10 +14,10 @@ import { isObservable } from "rxjs";
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
-  product;
-  relatedProducts;
+  product: Product;
+  relatedProducts: Observable<any>;
   selectedCurrency;
-  currencyList;
+  currencyList: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,7 +26,7 @@ export class ProductDetailComponent implements OnInit {
   ) { }
 
 
-  processInit(productId) {
+  processInit(productId): void {
     this.relatedProducts = this.productService.getRelatedProducts(productId);
     this.productService.getSingleProduct(productId).subscribe(product => this.product = product);
     this.selectedCurrency = this.currencyService.getCurrency();
@@ -37,7 +39,7 @@ export class ProductDetailComponent implements OnInit {
   }
   
   //lifecycle hook to monitor the selectedCurrency
-  ngDoCheck()	{
+  ngDoCheck(): void	{
     if(isObservable(this.selectedCurrency)) {
       this.selectedCurrency.subscribe(currency => this.selectedCurrency = currency);
     }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CurrencyService } from '../currency.service';
+import { Currency } from '../models/currency';
 import { ProductService } from '../product.service';
 
 @Component({
@@ -8,9 +10,9 @@ import { ProductService } from '../product.service';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  products;
-  selectedCurrency;
-  currencyList;
+  products: Observable<any>;
+  selectedCurrency: Currency;
+  currencyList: Observable<any>;
   
   constructor(private productService: ProductService,
     private currencyService: CurrencyService) { }
