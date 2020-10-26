@@ -39,10 +39,10 @@ export class ProductService {
     let index = this.products.findIndex(product => product.id == orginalId);
     this.products[index] = updatedProduct;
     //TODO: Name - must be longer than 3 characters
-    if (orginalId != updatedProduct.id) {
-      this.products.forEach(product => {
+    if (orginalId != updatedProduct.id) { //check if ID is changed 
+      this.products.forEach(product => { //iterate over all related products
         product.relatedProducts.forEach(relatedId => {
-          if(relatedId == orginalId){
+          if(relatedId == orginalId){ //if a match for original is found then remove from list and add new id
             product.relatedProducts.push(updatedProduct.id);
             product.relatedProducts.splice(product.relatedProducts.indexOf(relatedId), 1);
             relatedId = updatedProduct.id;

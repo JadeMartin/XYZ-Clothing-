@@ -8,7 +8,7 @@
                     <label for ="name">
                         Name
                     </label>
-                    <input id="name" name="name" type="text" formControlName="name" value={{product.name}} required/>
+                    <input id="name" name="name" type="text" formControlName="name" value={{product.name}} required minlength="3" />
                 </div>
                 <div *ngIf="idErrors" class="p-2">
                     <p class="text-danger">Id must be unique!</p>
